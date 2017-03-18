@@ -5,13 +5,12 @@ Parse a query string into an object or stringify an object into a query string.
 ## install
 
 ```sh
-npm install @m59/qs
+$ npm install @m59/qs
 ```
 
 ## example
 
 ```js
-// require however you like
 const qs = require('@m59/qs')
 
 qs.stringify({ crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] })
@@ -50,7 +49,7 @@ stringify({ foo: ['a', 'b', 'c'] }, { arrayFormat: 'index' })
 
 ### json
 
-When a value is an array, turn it into a JSON string.
+Turn arrays into JSON strings.
 
 ```js
 stringify({ foo: [true, 123, 'abc', {x: false}] }, { arrayFormat: 'json' })
