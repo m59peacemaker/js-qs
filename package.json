@@ -1,0 +1,42 @@
+{
+  "name": "@m59/qs",
+  "version": "0.0.0",
+  "description": "Parse a query string into an object or stringify an object into a query string.",
+  "keywords": [
+    "query",
+    "string",
+    "querystring",
+    "parse",
+    "stringify",
+    "object",
+    "param",
+    "params",
+    "parameter",
+    "url",
+    "uri",
+    "encode",
+    "decode",
+    "search",
+    "browser",
+    "browserify"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "tape '*.test.js' && tape 'lib/*.test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m59peacemaker/js-qs"
+  },
+  "author": {
+    "name": "Johnny Hauser",
+    "email": "johnnyhauser@gmail.com"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "encode-3986": "^1.0.0"
+  },
+  "devDependencies": {
+    "tape": "^4.6.3"
+  }
+}
