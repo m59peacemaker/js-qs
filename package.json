@@ -1,7 +1,7 @@
 {
   "name": "@m59/qs",
   "version": "1.0.0",
-  "description": "Parse a query string into an object or stringify an object into a query string.",
+  "description": "Parse a query string into an object, stringify an object into a query string, and extract or replace a query string in a url.",
   "keywords": [
     "query",
     "string",
@@ -17,6 +17,8 @@
     "encode",
     "decode",
     "search",
+    "replace",
+    "extract",
     "browser",
     "browserify"
   ],

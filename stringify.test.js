@@ -3,6 +3,11 @@ var stringify = require('./stringify')
 
 test('stringify', function (t) {
   t.equal(
+    stringify({}),
+    '',
+    'empty object results in empty string'
+  )
+  t.equal(
     stringify({foo: 'bar'}),
     'foo=bar',
     'one pair'

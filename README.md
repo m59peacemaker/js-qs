@@ -1,6 +1,6 @@
 # @m59/qs
 
-Parse a query string into an object or stringify an object into a query string.
+Parse a query string into an object, stringify an object into a query string, and extract or replace a query string in a url.
 
 ## install
 
@@ -103,3 +103,13 @@ Objects and nested arrays will be stringified as JSON. JSON strings are parsed b
     - `'index'`
     - `{ delimiter: string }`
 - `=> string` query string
+
+### `extract(url)`
+
+- `url: string` url to extract the query string from
+- `=> string` extracted query string
+
+### `replace(url, replacer)`
+
+- `url: string` url to replace the query string in
+- `=> string` url with the query string replaced

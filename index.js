@@ -1,7 +1,11 @@
-var stringify = require('./stringify')
+var extract = require('./extract')
 var parse = require('./parse')
+var replace = require('./replace')
+var stringify = require('./stringify')
 
 module.exports = {
-  stringify: stringify,
-  parse: parse
+  extract: extract,
+  parse: parse,
+  replace: replace,
+  stringify: stringify
 }

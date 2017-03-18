@@ -66,3 +66,11 @@ test('stringify(parse(string) == string - isomorphic', function (t) {
 
   t.end()
 })
+
+test('methods on main export', function (t) {
+  t.equal(qs.extract('//m59.us:80/_/?foo=bar'), '?foo=bar', 'qs.extract')
+  t.deepEqual(qs.parse('foo=bar'), { foo: 'bar' }, 'qs.parse')
+  t.equal(qs.replace('?foo=bar', '?bar=foo'), '?bar=foo', 'qs.replace')
+  t.equal(qs.stringify({ foo: 'bar' }), 'foo=bar', 'qs.stringify')
+  t.end()
+})
