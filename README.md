@@ -18,6 +18,12 @@ qs.stringify({ crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] })
 
 qs.parse('crust=thin&toppings=pepperoni&toppings=pepperoni&toppings=bacon')
 // => { crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] }
+
+qs.extract('http://pizza.pl0x?breadsticks=please#yum')
+// => 'breadsticks=please'
+
+qs.replace('http://pizza.pl0x?breadsticks=please#yum', queryString => 'breadsticks=seriously&marinara')
+// => 'http://pizza.pl0x?breadsticks=seriously&marinara#yum'
 ```
 
 ## array formats
@@ -79,18 +85,23 @@ parse('foo=a;b;c&bar=a,b,c&baz=,;,', { delimiters: [';', ','] })
 // => { foo: ['a', 'b', 'c'], bar: ['a', 'b', 'c'], baz: [',', ','] }
 ```
 
-### nesting
+## nesting
 
 Objects and nested arrays will be stringified as JSON. JSON strings are parsed back to objects by default.
 
+## `+`
+
+According to [RFC 1738](https://www.ietf.org/rfc/rfc1738.txt), a space should be encoded as `+`, and `+` should be parsed back to a space. That specification was updated in 2005 by [RFC 3986](https://www.ietf.org/rfc/rfc3986.txt), which states that `+` should be encoded as UTF-8 `%20`. Query strings ought to adhere to 3986 and therefore the meaning of `+` in a query string is technically ambiguous. However, many query string encoders still encode spaces to `+`, so parsers must parse `+` as a space.
+
 ## API
 
-### `parse(string, options)`
+### `parse(queryString, options)`
 
-- `string: string` a query string
+- `queryString: string` a query string
 - `options: object`
   - `json: boolean, true` when a value is a JSON string, parse it to object
   - `delimiters: [...strings], []` parse values as arrays when they contain a delimiter
+  - `plus: boolean, true` when `true` (default), decode `+` into a space
 - `=> object` parsed query string
 
 ### `stringify(object, options)`
@@ -102,6 +113,7 @@ Objects and nested arrays will be stringified as JSON. JSON strings are parsed b
     - `'bracket'`
     - `'index'`
     - `{ delimiter: string }`
+  - `plus: boolean, false` when `true`, encode spaces as `+`
 - `=> string` query string
 
 ### `extract(uri)`

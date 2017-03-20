@@ -67,6 +67,32 @@ test('stringify', function (t) {
   } catch (err) {
     t.pass('threw when passed invalid arrayFormat. err.message: ' + err.message)
   }
+  try {
+    stringify({a: 'a'}, {arrayFormat: {delimiterrible: true}})
+    t.fail('did not throw when passed invalid arrayFormat object')
+  } catch (err) {
+    t.pass('threw when passed invalid arrayFormat object. err.message: ' + err.message)
+  }
+  t.equal(
+    stringify({'f o': 'a b+ c'}, {plus: false}),
+    'f%20o=a%20b%2B%20c',
+    'encodes spaces as utf-8 when {plus: false}'
+  )
+  t.equal(
+    stringify({'f o': 'a b+ c'}, {plus: true}),
+    'f+o=a+b%2B+c',
+    'encodes spaces as + when {plus: true}'
+  )
+  t.equal(
+    stringify({'%20': ' %20 +'}, {plus: true}),
+    '%2520=+%2520+%2B',
+    '{plus: true} doesn\t conflict with values that were already utf-8 encoded spaces'
+  )
+  t.equal(
+    stringify({'f o': 'a b+ c'}),
+    'f%20o=a%20b%2B%20c',
+    'encodes spaces as utf-8 by default, {plus: false} is default'
+  )
   t.end()
 })
 
@@ -102,9 +128,9 @@ test('stringify - values are arrays', function (t) {
     'arrayFormat: {delimiter: \',\'} - foo=a,b,c'
   )
   t.equal(
-    stringify({foo: ['a', 'b', 'c']}, {arrayFormat: {delimiter: '+'}}),
-    'foo=a+b+c',
-    'arrayFormat: {delimiter: \'+\'} - foo=a+b+c'
+    stringify({foo: ['a', 'b', 'c']}, {arrayFormat: {delimiter: ';'}}),
+    'foo=a;b;c',
+    'arrayFormat: {delimiter: \';\'} - foo=a;b;c'
   )
   t.equal(
     stringify({foo: [123, false, {x: 'y'}, [1, 2]]}, {arrayFormat: 'duplicate'}),

@@ -27,8 +27,8 @@ test('parse(stringify(obj) == obj - isomorphic', function (t) {
   )
   t.deepEqual(
     qs.parse(
-      qs.stringify(input, {arrayFormat: {delimiter: '+'}}),
-      {delimiters: [',', '+']}
+      qs.stringify(input, {arrayFormat: {delimiter: ';'}}),
+      {delimiters: [',', ';']}
     ),
     input
   )
@@ -55,11 +55,11 @@ test('stringify(parse(string) == string - isomorphic', function (t) {
     string
   )
 
-  var string = qs.stringify(input, {arrayFormat: {delimiter: '+'}})
+  var string = qs.stringify(input, {arrayFormat: {delimiter: ';'}})
   t.deepEqual(
     qs.stringify(
-      qs.parse(string, {delimiters: [',', '+']}),
-      {arrayFormat: {delimiter: '+'}}
+      qs.parse(string, {delimiters: [',', ';']}),
+      {arrayFormat: {delimiter: ';'}}
     ),
     string
   )
@@ -68,7 +68,7 @@ test('stringify(parse(string) == string - isomorphic', function (t) {
 })
 
 test('methods on main export', function (t) {
-  t.equal(qs.extract('//m59.us:80/_/?foo=bar'), '?foo=bar', 'qs.extract')
+  t.equal(qs.extract('//m59.us:80/_/?foo=bar'), 'foo=bar', 'qs.extract')
   t.deepEqual(qs.parse('foo=bar'), { foo: 'bar' }, 'qs.parse')
   t.equal(qs.replace('m59.us?foo=bar', 'bar=foo'), 'm59.us?bar=foo', 'qs.replace')
   t.equal(qs.stringify({ foo: 'bar' }), 'foo=bar', 'qs.stringify')

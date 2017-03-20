@@ -47,6 +47,65 @@ test('parse', function (t) {
     {foo: null},
     'null value - key only'
   )
+  t.deepEqual(
+    parse('foo==12=3='),
+    {foo: '=12=3='},
+    'value can contain ='
+  )
+  t.end()
+})
+
+test('parse - wonky input', function (t) {
+  t.deepEqual(
+    parse('=value'),
+    {'': 'value'},
+    "starts with = => {'': 'value'}"
+  )
+  t.deepEqual(
+    parse('==='),
+    {'': '=='},
+    "just equal signs === => {'': '=='}"
+  )
+  t.deepEqual(
+    parse('==&=='),
+    {'': ['=', '=']},
+    "==&== => {'': ['=', '=']}"
+  )
+  t.deepEqual(
+    parse('==&foo==foo'),
+    {'': '=', foo: '=foo'},
+    "==&foo==foo => {'': '=', foo: '=foo'}"
+  )
+  t.end()
+})
+
+test('parse - {plus}', function (t) {
+  t.deepEqual(
+    parse('f+o=a+b%2B+c', {plus: true}),
+    {'f o': 'a b+ c'},
+    'decodes + as space when {plus: true}'
+  )
+  t.deepEqual(
+    parse('f+o=a+b%2B+c', {plus: false}),
+    {'f+o': 'a+b++c'},
+    'doesn\'t touch + space when {plus: false}'
+  )
+  t.deepEqual(
+    parse('f+o=a+b%2B+c'),
+    {'f o': 'a b+ c'},
+    'decodes + as space by default, {plus: true} is default'
+  )
+  try {
+    parse('f+o=a+b%2B+c', { plus: true, delimiters: ['+'] }),
+    t.fail('did not throw an error when { plus: true, delimiters: [\'+\'] }')
+  } catch (err) {
+    t.pass('throws error when { plus: true, delimiters: [\'+\'] }. err.message: ' + err.message)
+  }
+  t.deepEqual(
+    parse('f+o=a+b%2B+c', { plus: false, delimiters: ['+'] }),
+    {'f+o': ['a', 'b+', 'c']},
+    '+ can be used as a delimiter when { plus: false }'
+  )
   t.end()
 })
 
