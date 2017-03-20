@@ -1,6 +1,6 @@
 # @m59/qs
 
-Parse a query string into an object, stringify an object into a query string, and extract or replace a query string in a url.
+Functions for working with query strings.
 
 ## install
 
@@ -61,21 +61,21 @@ stringify({ foo: [true, 123, 'abc', {x: false}] }, { arrayFormat: 'json' })
 Arrays can be output as a single key=value pair with the items joined by a delimiter.
 
 ```js
-stringify({ foo: ['a', 'b', 'c'] }, { delimiter: '+' })
-// => 'foo=a+b+c'
+stringify({ foo: ['a', 'b', 'c'] }, { delimiter: ';' })
+// => 'foo=a;b;c'
 ```
 
 Values with delimiters can be parsed as arrays.
 
 ```js
-parse('foo=a+b+c', { delimiters: ['+'] })
+parse('foo=a;b;c', { delimiters: [';'] })
 // => { foo: ['a', 'b', 'c'] }
 ```
 
 If `parse()` is given multiple delimiters, the first given delimiter that exists in the value will be used to split it into an array.
 
 ```js
-parse('foo=a+b+c&bar=a,b,c&baz=,+,', { delimiters: ['+', ','] })
+parse('foo=a;b;c&bar=a,b,c&baz=,;,', { delimiters: [';', ','] })
 // => { foo: ['a', 'b', 'c'], bar: ['a', 'b', 'c'], baz: [',', ','] }
 ```
 
@@ -104,12 +104,20 @@ Objects and nested arrays will be stringified as JSON. JSON strings are parsed b
     - `{ delimiter: string }`
 - `=> string` query string
 
-### `extract(url)`
+### `extract(uri)`
 
-- `url: string` url to extract the query string from
+- `uri: string` uri to extract the query string from
 - `=> string` extracted query string
 
-### `replace(url, replacer)`
+### `replace(uri, replacer, options)`
 
-- `url: string` url to replace the query string in
-- `=> string` url with the query string replaced
+- `uri: string` uri to replace the query string in
+- `replacer: string | function`
+  - `string` new query string value
+  - `replacer(queryString)`
+    - `queryString: string` the query string from `uri` or an empty string if `uri` does not have a query string
+    - `uri` the `uri` argument passed to `replace`
+    - `=> newQueryString: string` new query string value
+- `options: object`
+  - `separator: boolean, false` when `true`, the `?` separator will be included in the replacement, so `queryString` passed to `replacer` will include it if it exists in `uri`, and it will be replaced in `uri` by `replacer`.
+- `=> string` `uri` with the query string replaced

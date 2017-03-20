@@ -1,9 +1,13 @@
-var regex = require('./lib/regex')
+var segment = require('./lib/segment')
 
-var replace = function (url, replacer) {
-  return url.replace(regex, function (_, qsStart, start, qs) {
-    return (start || '') + (typeof replacer === 'function' ? replacer(qs || qsStart) : replacer)
-  })
+var replace = function (uri, replacer, options) {
+  var sep = options && options.separator
+  var segments = segment(uri)
+  if (!sep) {
+    segments.query = segments.query.slice(1)
+  }
+  var query = (!sep ? '?' : '') + (typeof replacer === 'function' ? replacer(segments.query, uri) : replacer)
+  return segments.main + query + segments.hash
 }
 
 module.exports = replace

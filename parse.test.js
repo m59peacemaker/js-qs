@@ -82,13 +82,13 @@ test('parse - array values', function (t) {
     'splits value on delimiter'
   )
   t.deepEqual(
-    parse('foo=a,b,c&foo=d+e+f', {delimiters: [',', '+']}),
+    parse('foo=a,b,c&foo=d;e;f', {delimiters: [',', ';']}),
     {foo: [['a', 'b', 'c'], ['d', 'e', 'f']]},
     'multiple delimiters'
   )
   t.deepEqual(
-    parse('foo=a,b+,c&foo=,d+e+f', {delimiters: [',', '+']}),
-    {foo: [['a', 'b+', 'c'], ['', 'd+e+f']]},
+    parse('foo=a,b;,c&foo=,d;e;f', {delimiters: [',', ';']}),
+    {foo: [['a', 'b;', 'c'], ['', 'd;e;f']]},
     'only splits on first delimiter that works'
   )
   t.end()

@@ -1,8 +1,7 @@
-var regex = require('./lib/regex')
+var segment = require('./lib/segment')
 
-var extract = function (url) {
-  var matches = url.match(regex)
-  return matches ? matches[3] || matches[0] : ''
+var extract = function (uri) {
+  return segment(uri).query
 }
 
 module.exports = extract
