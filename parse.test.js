@@ -168,6 +168,10 @@ test('parse - array values', function (t) {
     'only splits on first delimiter that works'
   )
   t.deepEqual(
+    parse('foo=a;b;c&foo[]=123', {delimiters: [';']}),
+    {foo: [['a', 'b', 'c'], '123']}
+  )
+  t.deepEqual(
     parse('[]=a&[]=[]&[1]=b&[][]&[]&[]='),
     {'': ['a', [], 'b', null, ''], '[]': [null]},
     'crazy bracket only key stuff'
