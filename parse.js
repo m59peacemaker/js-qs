@@ -75,7 +75,9 @@ var parse = function (string, options) {
     var k = decode(stripBracket(_k))
     var _v = x.length > 1 ? x.slice(1).join('=') : undefined
     var v = formatValue(_v)
-    hasBracket(_k) ? params.push({ k, v, array: true }) : params.push({ k, v })
+    var param = { k: k, v: v }
+    hasBracket(_k) && (param.array = true)
+    params.push(param)
   })
 
   var grouped = reduceBy(
@@ -93,7 +95,8 @@ var parse = function (string, options) {
   )
 
   Object.keys(grouped).forEach(function (key) {
-    var { v, array } = grouped[key]
+    var v = grouped[key].v
+    var array = grouped[key].array
     grouped[key] = (v.length > 1 || array) ? v : v[0]
   })
 
