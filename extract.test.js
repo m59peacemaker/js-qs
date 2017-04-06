@@ -21,5 +21,6 @@ test('extract', function (t) {
   ].forEach(function (set) {
     t.equal(extract(set[0]), set[1], set[0] + ' => ' + set[1])
   })
+
   t.end()
 })

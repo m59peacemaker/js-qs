@@ -24,7 +24,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "tape '*.test.js' && tape 'lib/*.test.js'"
+    "test": "tape '*.test.js' 'lib/*.test.js'"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,9 @@
   },
   "license": "CC0-1.0",
   "dependencies": {
-    "encode-3986": "^1.0.0"
+    "encode-3986": "^1.0.0",
+    "reduce-by": "^1.0.0",
+    "try_catch": "^1.0.2"
   },
   "devDependencies": {
     "tape": "^4.6.3"

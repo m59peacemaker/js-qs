@@ -137,5 +137,6 @@ test('stringify - values are arrays', function (t) {
     'foo=123&foo=false&foo=%7B%22x%22%3A%22y%22%7D&foo=%5B1%2C2%5D',
     'nested objects/arrays into JSON strings'
   )
+
   t.end()
 })

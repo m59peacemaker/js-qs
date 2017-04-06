@@ -113,5 +113,6 @@ test('replace', function (t) {
     'm59.us?',
     'added separator returned by replacer'
   )
+
   t.end()
 })

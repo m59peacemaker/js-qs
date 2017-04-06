@@ -72,5 +72,6 @@ test('methods on main export', function (t) {
   t.deepEqual(qs.parse('foo=bar'), { foo: 'bar' }, 'qs.parse')
   t.equal(qs.replace('m59.us?foo=bar', 'bar=foo'), 'm59.us?bar=foo', 'qs.replace')
   t.equal(qs.stringify({ foo: 'bar' }), 'foo=bar', 'qs.stringify')
+
   t.end()
 })

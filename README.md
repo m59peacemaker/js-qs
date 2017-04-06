@@ -30,6 +30,19 @@ qs.replace('http://pizza.pl0x?breadsticks=please#yum', queryString => 'breadstic
 
 `stringify()` can output array values in different formats. `parse()` will parse all of them.
 
+A key with a bracket will always have a value that is an array, even if the key appears only once.
+
+```js
+// "foo" appears once - treat as single value
+parse('foo=a') // => { foo: 'a' }
+
+// "foo" appears twice - treat as array
+parse('foo=a&foo=b') // => { foo: [ 'a', 'b' ] }
+
+// "foo" appears once, but has a bracket - treat as array
+parse('foo[]=a') // => { foo: [ 'a' ] }
+```
+
 ### duplicate (default)
 
 ```js
@@ -46,7 +59,7 @@ stringify({ foo: ['a', 'b', 'c'] }, { arrayFormat: 'bracket' })
 
 ### index
 
-Indices are only aesthetic - they do not necessarily correspond to array index. Items should appear in order.
+Indices are only aesthetic. They do not necessarily correspond to array index. Items should appear in order.
 
 ```js
 stringify({ foo: ['a', 'b', 'c'] }, { arrayFormat: 'index' })

@@ -2,6 +2,13 @@ var test = require('tape')
 var parse = require('./parse')
 
 test('parse', function (t) {
+
+  try {
+    parse(['foo'])
+    t.fail('should throw when passed a non string')
+  } catch (err) {
+    t.pass('throws if given non string as query string')
+  }
   t.deepEqual(
     parse('foo=bar'),
     {foo: 'bar'},
@@ -121,9 +128,19 @@ test('parse - array values', function (t) {
     'parses bracket syntax as array'
   )
   t.deepEqual(
+    parse('foo[]=a&bar=b'),
+    {foo: ['a'], bar: 'b'},
+    'parses single item with bracket as array'
+  )
+  t.deepEqual(
     parse('foo[0]=a&foo[1]=b&foo[2]=c'),
     {foo: ['a', 'b', 'c']},
     'parses index syntax as array'
+  )
+  t.deepEqual(
+    parse('foo[0]=a&bar=b'),
+    {foo: ['a'], bar: 'b'},
+    'parses single item with index bracket as array'
   )
   t.deepEqual(
     parse('foo[0]=a&foo[1345]=b&foo[2]=c'),
@@ -149,6 +166,11 @@ test('parse - array values', function (t) {
     parse('foo=a,b;,c&foo=,d;e;f', {delimiters: [',', ';']}),
     {foo: [['a', 'b;', 'c'], ['', 'd;e;f']]},
     'only splits on first delimiter that works'
+  )
+  t.deepEqual(
+    parse('[]=a&[]=[]&[1]=b&[][]&[]&[]='),
+    {'': ['a', [], 'b', null, ''], '[]': [null]},
+    'crazy bracket only key stuff'
   )
   t.end()
 })
@@ -197,5 +219,6 @@ test('parse - json string values', function (t) {
     {foo: [['a'], {a: 'a'}]},
     'duplicate keys with json string values'
   )
+
   t.end()
 })
