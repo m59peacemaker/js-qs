@@ -1,4 +1,3 @@
-var reduceBy = require('reduce-by')
 var tryCatch = require('try_catch')
 var brackets = require('./lib/brackets')
 var hasBracket = brackets.hasBracket
@@ -68,39 +67,31 @@ var parse = function (string, options) {
 
   var formatValue = FormatValue(options, decode)
 
-  var params = []
+  var params = {}
+  var isGrouped = {}
   string.length && string.split('&').forEach(function (part) {
     var x = part.split('=')
     var _k = x[0]
     var k = decode(stripBracket(_k))
     var _v = x.length > 1 ? x.slice(1).join('=') : undefined
     var v = formatValue(_v)
-    var param = { k: k, v: v }
-    hasBracket(_k) && (param.array = true)
-    params.push(param)
-  })
 
-  var grouped = reduceBy(
-    function (acc, item) {
-      acc.v = acc.v || []
-      acc.v.push(item.v)
-      if (item.array) {
-        acc.array = true
+    if (params.hasOwnProperty(k)) { // key has appeared before
+      if (!isGrouped[k]) {
+        params[k] = [ params[k] ]
+        isGrouped[k] = true
       }
-      return acc
-    },
-    function () { return {} },
-    function (v) { return v.k },
-    params
-  )
-
-  Object.keys(grouped).forEach(function (key) {
-    var v = grouped[key].v
-    var array = grouped[key].array
-    grouped[key] = (v.length > 1 || array) ? v : v[0]
+      params[k].push(v)
+    } else { // first time seeing this key
+      if (hasBracket(_k)) { // has a bracket, must be an array
+        v = [ v ]
+        isGrouped[k] = true
+      }
+      params[k] = v
+    }
   })
 
-  return grouped
+  return params
 }
 
 module.exports = parse
