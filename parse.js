@@ -67,7 +67,7 @@ var parse = function (string, options) {
 
   var formatValue = FormatValue(options, decode)
 
-  var params = {}
+  var params = Object.create(null)
   var isGrouped = {}
   string.length && string.split('&').forEach(function (part) {
     var x = part.split('=')
@@ -76,7 +76,7 @@ var parse = function (string, options) {
     var _v = x.length > 1 ? x.slice(1).join('=') : undefined
     var v = formatValue(_v)
 
-    if (params.hasOwnProperty(k)) { // key has appeared before
+    if (Object.prototype.hasOwnProperty.call(params, k)) { // key has appeared before
       if (!isGrouped[k]) {
         params[k] = [ params[k] ]
         isGrouped[k] = true

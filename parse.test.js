@@ -59,6 +59,13 @@ test('parse', function (t) {
     {foo: '=12=3='},
     'value can contain ='
   )
+
+  t.equal(
+    Object.getPrototypeOf(parse('foo=123&bar=456')),
+    null,
+    'result object has no prototype'
+  )
+
   t.end()
 })
 
