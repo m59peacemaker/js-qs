@@ -24,7 +24,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "tape '*.test.js' 'lib/*.test.js'"
+    "test": "tape '*.test.js' 'lib/*.test.js'",
+    "dev": "onchange -i 'src/**/*' -- npm run test"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "try_catch": "^1.0.2"
   },
   "devDependencies": {
+    "onchange": "^3.2.1",
     "tape": "^4.6.3"
   }
 }
