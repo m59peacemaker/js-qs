@@ -1,5 +1,6 @@
 extends: standard
 rules:
+  prefer-const: error
   no-var: error
   no-multi-spaces: off
   array-bracket-spacing:
@@ -8,3 +9,6 @@ rules:
   object-curly-spacing:
     - error
     - always
+  operator-linebreak:
+    - error
+    - before

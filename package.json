@@ -24,6 +24,8 @@
   ],
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src",
+    "pretest": "npm run lint",
     "test": "tape -r reify 'src/**/*.test.js'",
     "dev": "onchange -i 'src/**/*' -- npm run test"
   },
