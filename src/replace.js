@@ -1,4 +1,4 @@
-var segment = require('./lib/segment')
+import segment from './lib/segment'
 
 var replace = function (uri, replacer, options) {
   var sep = options && options.separator
@@ -10,4 +10,4 @@ var replace = function (uri, replacer, options) {
   return segments.main + query + segments.hash
 }
 
-module.exports = replace
+export default replace

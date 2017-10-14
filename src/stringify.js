@@ -1,4 +1,4 @@
-var strictEncode = require('encode-3986')
+import strictEncode from 'encode-3986'
 
 var FormatArray = function (arrayFormat, formatValue, formatPair) {
   var formatters = {
@@ -70,7 +70,6 @@ var Format = function (arrayFormat, encode) {
 
 var stringify = function (params, options) {
   options = options || {}
-  options.plus = options.plus ? true : false
   options.arrayFormat = options.arrayFormat || 'duplicate'
   var format = Format(options.arrayFormat, function (v) {
     v = strictEncode(v)
@@ -84,4 +83,4 @@ var stringify = function (params, options) {
   }).join('&')
 }
 
-module.exports = stringify
+export default stringify

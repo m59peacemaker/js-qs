@@ -24,7 +24,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "tape '*.test.js' 'lib/*.test.js'",
+    "test": "tape -r reify 'src/**/*.test.js'",
     "dev": "onchange -i 'src/**/*' -- npm run test"
   },
   "repository": {
@@ -41,7 +41,14 @@
     "try_catch": "^1.0.2"
   },
   "devDependencies": {
+    "eslint": "^4.8.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "onchange": "^3.2.1",
+    "reify": "^0.12.3",
     "tape": "^4.6.3"
   }
 }

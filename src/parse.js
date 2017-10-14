@@ -1,7 +1,5 @@
-var tryCatch = require('try_catch')
-var brackets = require('./lib/brackets')
-var hasBracket = brackets.hasBracket
-var stripBracket = brackets.stripBracket
+import tryCatch from 'try_catch'
+import { hasBracket, stripBracket } from './lib/brackets'
 
 // returns parsed object if `s` is a JSON string or returns undefined
 var tryParseJSON = function (s) {
@@ -49,8 +47,8 @@ var FormatValue = function (options, decode) {
 
 var parse = function (string, options) {
   options = options || {}
-  options.json = options.json === false ? false : true
-  options.plus = options.plus === false ? false : true
+  options.json = options.json !== false
+  options.plus = options.plus !== false
   options.delimiters = options.delimiters || []
 
   if (typeof string !== 'string') {
@@ -94,4 +92,4 @@ var parse = function (string, options) {
   return params
 }
 
-module.exports = parse
+export default parse

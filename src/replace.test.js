@@ -1,5 +1,5 @@
-var test = require('tape')
-var replace = require('./replace')
+import test from 'tape'
+import replace from './replace'
 
 var setMsg = function (msg, set) {
   return msg + ' __ ' + set[0] + ' => ' + set[1]
@@ -7,37 +7,37 @@ var setMsg = function (msg, set) {
 
 test('replace', function (t) {
   ;[
-    ['',               ''],
-    ['m59.us?foo=bar', 'm59.us'],
-    ['m59.us?',        'm59.us'],
-    ['m59.us?#',       'm59.us#'],
-    ['m59.us??#?',     'm59.us#?'],
-    ['m59.us?query#',  'm59.us#'],
-    ['m59.us?query#?', 'm59.us#?'],
-    ['m59.us?#hash',   'm59.us#hash'],
-    ['?foo=bar',       ''],
-    ['??foo=bar',      '']
+    [ '',               '' ],
+    [ 'm59.us?foo=bar', 'm59.us' ],
+    [ 'm59.us?',        'm59.us' ],
+    [ 'm59.us?#',       'm59.us#' ],
+    [ 'm59.us??#?',     'm59.us#?' ],
+    [ 'm59.us?query#',  'm59.us#' ],
+    [ 'm59.us?query#?', 'm59.us#?' ],
+    [ 'm59.us?#hash',   'm59.us#hash' ],
+    [ '?foo=bar',       '' ],
+    [ '??foo=bar',      '' ]
   ].forEach(function (set) {
     t.equal(
-      replace(set[0], '', {separator: true}),
+      replace(set[0], '', { separator: true }),
       set[1],
       setMsg('{ separator: true } replaced ?', set)
     )
   })
   ;[
-    ['',               '?'],
-    ['m59.us?foo=bar', 'm59.us?'],
-    ['m59.us?',        'm59.us?'],
-    ['m59.us?#',       'm59.us?#'],
-    ['m59.us??#?',     'm59.us?#?'],
-    ['m59.us?query#',  'm59.us?#'],
-    ['m59.us?query#?', 'm59.us?#?'],
-    ['m59.us?#hash',   'm59.us?#hash'],
-    ['?foo=bar',       '?'],
-    ['??foo=bar',      '?']
+    [ '',               '?' ],
+    [ 'm59.us?foo=bar', 'm59.us?' ],
+    [ 'm59.us?',        'm59.us?' ],
+    [ 'm59.us?#',       'm59.us?#' ],
+    [ 'm59.us??#?',     'm59.us?#?' ],
+    [ 'm59.us?query#',  'm59.us?#' ],
+    [ 'm59.us?query#?', 'm59.us?#?' ],
+    [ 'm59.us?#hash',   'm59.us?#hash' ],
+    [ '?foo=bar',       '?' ],
+    [ '??foo=bar',      '?' ]
   ].forEach(function (set) {
     t.equal(
-      replace(set[0], '', {separator: false}),
+      replace(set[0], '', { separator: false }),
       set[1],
       setMsg('{ separator: false } kept ?', set)
     )
@@ -53,10 +53,10 @@ test('replace', function (t) {
     '{ separator: false } is default'
   )
   ;[
-    ['',         '?foo=bar'],
-    ['#?',       '?foo=bar#?'],
-    ['m59.us',   'm59.us?foo=bar'],
-    ['m59.us##', 'm59.us?foo=bar##']
+    [ '',         '?foo=bar' ],
+    [ '#?',       '?foo=bar#?' ],
+    [ 'm59.us',   'm59.us?foo=bar' ],
+    [ 'm59.us##', 'm59.us?foo=bar##' ]
   ].forEach(function (set) {
     t.equal(
       replace(set[0], 'foo=bar'),
@@ -65,13 +65,13 @@ test('replace', function (t) {
     )
   })
   ;[
-    ['m59.us#?foo=bar',    'm59.us?0_0#?foo=bar'],
-    ['m59.us?foo=bar',     'm59.us?0_0'],
-    ['m59.us?foo?foo=bar', 'm59.us?0_0'],
-    ['m59.us?foo=b?r',     'm59.us?0_0'],
-    ['m59.us?foo#',        'm59.us?0_0#'],
-    ['m59.us??##?foo=bar', 'm59.us?0_0##?foo=bar'],
-    ['??##?foo=bar',       '?0_0##?foo=bar']
+    [ 'm59.us#?foo=bar',    'm59.us?0_0#?foo=bar' ],
+    [ 'm59.us?foo=bar',     'm59.us?0_0' ],
+    [ 'm59.us?foo?foo=bar', 'm59.us?0_0' ],
+    [ 'm59.us?foo=b?r',     'm59.us?0_0' ],
+    [ 'm59.us?foo#',        'm59.us?0_0#' ],
+    [ 'm59.us??##?foo=bar', 'm59.us?0_0##?foo=bar' ],
+    [ '??##?foo=bar',       '?0_0##?foo=bar' ]
   ].forEach(function (set) {
     t.equal(
       replace(set[0], '0_0'),

@@ -1,5 +1,5 @@
-var test = require('tape')
-var brackets = require('./brackets')
+import test from 'tape'
+import brackets from './brackets'
 var has = brackets.hasBracket
 var strip = brackets.stripBracket
 
