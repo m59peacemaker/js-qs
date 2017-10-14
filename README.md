@@ -1,6 +1,8 @@
 # @m59/qs
 
-Functions for working with query strings.
+> Functions for working with query strings.
+
+[![Build Status](https://travis-ci.org/m59peacemaker/js-qs.svg?branch=master)](https://travis-ci.org/m59peacemaker/js-qs)
 
 ## install
 
