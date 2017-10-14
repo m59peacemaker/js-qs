@@ -8,3 +8,4 @@
 /platforms
 *.log
 *.tmp
+package-lock.json
