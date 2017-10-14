@@ -1,9 +1,7 @@
-var test = require('tape')
-var brackets = require('./brackets')
-var has = brackets.hasBracket
-var strip = brackets.stripBracket
+import test from 'tape'
+import { hasBracket as has, stripBracket as strip } from './brackets'
 
-test('brackets.hasBracket', function (t) {
+test('brackets.hasBracket', t => {
   ;[
     '[]',
     'foo[]',
@@ -16,7 +14,7 @@ test('brackets.hasBracket', function (t) {
     '[[]',
     '.[]',
     '[[0]'
-  ].forEach(function (v) {
+  ].forEach(v => {
     t.true(has(v), v)
   })
   ;[
@@ -27,13 +25,13 @@ test('brackets.hasBracket', function (t) {
     '[0]]',
     '[-]',
     '[a]'
-  ].forEach(function (v) {
+  ].forEach(v => {
     t.false(has(v), v)
   })
   t.end()
 })
 
-test('brackets.stripBracket', function (t) {
+test('brackets.stripBracket', t => {
   t.equal(strip('foo[]'), 'foo')
   t.equal(strip('foo[0]'), 'foo')
   t.equal(strip('foo[1209]'), 'foo')

@@ -22,10 +22,16 @@
     "browser",
     "browserify"
   ],
-  "main": "index.js",
+  "main": "build/cjs/index.js",
+  "module": "src/index.js",
   "scripts": {
-    "test": "tape '*.test.js' 'lib/*.test.js'",
-    "dev": "onchange -i 'src/**/*' -- npm run test"
+    "build": "babel src --plugins transform-es2015-modules-commonjs --out-dir build/cjs",
+    "clean": "rm -r build || true",
+    "lint": "eslint src",
+    "pretest": "npm run lint",
+    "test": "tape -r reify 'src/**/*.test.js'",
+    "dev": "onchange -i 'src/**/*' -- npm run test",
+    "prepublish": "npm run clean; npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -41,7 +47,16 @@
     "try_catch": "^1.0.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "eslint": "^4.8.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "onchange": "^3.2.1",
+    "reify": "^0.12.3",
     "tape": "^4.6.3"
   }
 }
