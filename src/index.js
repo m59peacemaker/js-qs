@@ -3,7 +3,7 @@ import parse from './parse'
 import replace from './replace'
 import stringify from './stringify'
 
-export default {
+export {
   extract,
   parse,
   replace,

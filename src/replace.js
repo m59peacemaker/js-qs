@@ -1,12 +1,12 @@
 import segment from './lib/segment'
 
-var replace = function (uri, replacer, options) {
-  var sep = options && options.separator
-  var segments = segment(uri)
-  if (!sep) {
+const replace = (uri, replacer, { separator = false } = {}) => {
+  const segments = segment(uri)
+  if (!separator) {
     segments.query = segments.query.slice(1)
   }
-  var query = (!sep ? '?' : '') + (typeof replacer === 'function' ? replacer(segments.query, uri) : replacer)
+  const query = (!separator ? '?' : '')
+    + (typeof replacer === 'function' ? replacer(segments.query, uri) : replacer)
   return segments.main + query + segments.hash
 }
 

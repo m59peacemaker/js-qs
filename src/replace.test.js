@@ -1,11 +1,9 @@
 import test from 'tape'
 import replace from './replace'
 
-var setMsg = function (msg, set) {
-  return msg + ' __ ' + set[0] + ' => ' + set[1]
-}
+const setMsg = (msg, [ input, output ]) => `${msg} __ ${input} => ${output}`
 
-test('replace', function (t) {
+test('replace', t => {
   ;[
     [ '',               '' ],
     [ 'm59.us?foo=bar', 'm59.us' ],
@@ -17,11 +15,11 @@ test('replace', function (t) {
     [ 'm59.us?#hash',   'm59.us#hash' ],
     [ '?foo=bar',       '' ],
     [ '??foo=bar',      '' ]
-  ].forEach(function (set) {
+  ].forEach(([ input, output ]) => {
     t.equal(
-      replace(set[0], '', { separator: true }),
-      set[1],
-      setMsg('{ separator: true } replaced ?', set)
+      replace(input, '', { separator: true }),
+      output,
+      setMsg('{ separator: true } replaced ?', [ input, output ])
     )
   })
   ;[
@@ -35,11 +33,11 @@ test('replace', function (t) {
     [ 'm59.us?#hash',   'm59.us?#hash' ],
     [ '?foo=bar',       '?' ],
     [ '??foo=bar',      '?' ]
-  ].forEach(function (set) {
+  ].forEach(([ input, output ]) => {
     t.equal(
-      replace(set[0], '', { separator: false }),
-      set[1],
-      setMsg('{ separator: false } kept ?', set)
+      replace(input, '', { separator: false }),
+      output,
+      setMsg('{ separator: false } kept ?', [ input, output ])
     )
   })
   t.equal(
@@ -57,11 +55,11 @@ test('replace', function (t) {
     [ '#?',       '?foo=bar#?' ],
     [ 'm59.us',   'm59.us?foo=bar' ],
     [ 'm59.us##', 'm59.us?foo=bar##' ]
-  ].forEach(function (set) {
+  ].forEach(([ input, output ]) => {
     t.equal(
-      replace(set[0], 'foo=bar'),
-      set[1],
-      setMsg('added query string', set)
+      replace(input, 'foo=bar'),
+      output,
+      setMsg('added query string', [ input, output ])
     )
   })
   ;[
@@ -72,15 +70,15 @@ test('replace', function (t) {
     [ 'm59.us?foo#',        'm59.us?0_0#' ],
     [ 'm59.us??##?foo=bar', 'm59.us?0_0##?foo=bar' ],
     [ '??##?foo=bar',       '?0_0##?foo=bar' ]
-  ].forEach(function (set) {
+  ].forEach(([ input, output ]) => {
     t.equal(
-      replace(set[0], '0_0'),
-      set[1],
-      setMsg('replaced query string', set)
+      replace(input, '0_0'),
+      output,
+      setMsg('replaced query string', [ input, output ])
     )
   })
   t.equal(
-    replace('m59.us?123', function (string, uri) {
+    replace('m59.us?123', (string, uri) => {
       t.equal(string, '123', 'replacer receives query string')
       t.equal(uri, 'm59.us?123', 'replacer received uri')
       return string + '456'
@@ -89,7 +87,7 @@ test('replace', function (t) {
     'replacer produced correct result'
   )
   t.equal(
-    replace('m59.us', function (string) {
+    replace('m59.us', string => {
       t.equal(string, '', 'replacer receives empty string when no query string')
       return ''
     }),
@@ -98,7 +96,7 @@ test('replace', function (t) {
   )
 
   t.equal(
-    replace('m59.us?foo=bar', function (string) {
+    replace('m59.us?foo=bar', string => {
       t.equal(string, '?foo=bar', 'replacer receives query string including separator when { separator: true }')
       return ''
     }, { separator: true }),
@@ -106,7 +104,7 @@ test('replace', function (t) {
     'replacer did not automatically insert ?'
   )
   t.equal(
-    replace('m59.us', function (string) {
+    replace('m59.us', string => {
       t.equal(string, '', 'replacer receives empty string when no query string and { separator: true }')
       return '?'
     }, { separator: true }),

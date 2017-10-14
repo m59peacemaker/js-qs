@@ -1,34 +1,22 @@
 import strictEncode from 'encode-3986'
 
-var FormatArray = function (arrayFormat, formatValue, formatPair) {
-  var formatters = {
-    duplicate: function (k, array) {
-      return array
-        .map(function (v) {
-          return formatPair(k, v)
-        })
-        .join('&')
-    },
-    bracket: function (k, array) {
-      return array
-        .map(function (v) {
-          return formatPair(k + '[]', v)
-        })
-        .join('&')
-    },
-    index: function (k, array) {
-      return array
-        .map(function (v, idx) {
-          return formatPair(k + '[' + idx + ']', v)
-        })
-        .join('&')
-    },
-    json: function (k, array) {
-      return formatPair(k, JSON.stringify(array))
-    },
-    delimiter: function (delimiter, k, array) {
-      return k + '=' + array.map(formatValue).join(delimiter)
-    }
+const FormatArray = (arrayFormat, formatValue, formatPair) => {
+  const formatters = {
+    duplicate: (k, array) => array
+      .map(v => formatPair(k, v))
+      .join('&'),
+
+    bracket: (k, array) => array
+      .map(v => formatPair(k + '[]', v))
+      .join('&'),
+
+    index: (k, array) => array
+      .map((v, idx) => formatPair(k + '[' + idx + ']', v))
+      .join('&'),
+
+    json: (k, array) => formatPair(k, JSON.stringify(array)),
+
+    delimiter: (delimiter, k, array) => k + '=' + array.map(formatValue).join(delimiter)
   }
 
   if (typeof arrayFormat === 'object') {
@@ -38,7 +26,7 @@ var FormatArray = function (arrayFormat, formatValue, formatPair) {
       throw new Error('arrayFormat object is not valid')
     }
   } else {
-    var formatter = formatters[arrayFormat]
+    const formatter = formatters[arrayFormat]
     if (!formatter) {
       throw new Error('"' + arrayFormat + '" is not a valid array format')
     }
@@ -46,41 +34,38 @@ var FormatArray = function (arrayFormat, formatValue, formatPair) {
   }
 }
 
-var Format = function (arrayFormat, encode) {
-  var formatValue = function (v) {
-    if (typeof v === 'object') {
-      v = JSON.stringify(v)
-    }
-    return encode(v)
-  }
+const Format = (arrayFormat, encode) => {
+  const formatValue = v => encode(typeof v === 'object' ? JSON.stringify(v) : v)
 
-  var formatPair = function (k, v) {
+  const formatPair = (k, v) => {
     if (v === undefined) { return '' }
     if (v === null) { return k }
     return k + '=' + formatValue(v)
   }
 
-  var formatArray = FormatArray(arrayFormat, formatValue, formatPair)
+  const formatArray = FormatArray(arrayFormat, formatValue, formatPair)
 
-  return function (k, v) {
-    k = encode(k)
-    return Array.isArray(v) ? formatArray(k, v) : formatPair(k, v)
+  return (k, v) => {
+    const encodedK = encode(k)
+    return Array.isArray(v)
+      ? formatArray(encodedK, v)
+      : formatPair(encodedK, v)
   }
 }
 
-var stringify = function (params, options) {
-  options = options || {}
+const stringify = (params, options = {}) => {
   options.arrayFormat = options.arrayFormat || 'duplicate'
-  var format = Format(options.arrayFormat, function (v) {
+  const format = Format(options.arrayFormat, v => {
     v = strictEncode(v)
     if (options.plus) {
       v = v.replace(/%20/g, '+')
     }
     return v
   })
-  return Object.keys(params).sort().map(function (k) {
-    return format(k, params[k])
-  }).join('&')
+  return Object.keys(params)
+    .sort()
+    .map(k => format(k, params[k]))
+    .join('&')
 }
 
 export default stringify

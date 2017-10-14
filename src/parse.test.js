@@ -1,7 +1,7 @@
 import test from 'tape'
 import parse from './parse'
 
-test('parse', function (t) {
+test('parse', t => {
   try {
     parse([ 'foo' ])
     t.fail('should throw when passed a non string')
@@ -68,7 +68,7 @@ test('parse', function (t) {
   t.end()
 })
 
-test('parse - wonky input', function (t) {
+test('parse - wonky input', t => {
   t.deepEqual(
     parse('=value'),
     { '': 'value' },
@@ -92,7 +92,7 @@ test('parse - wonky input', function (t) {
   t.end()
 })
 
-test('parse - {plus}', function (t) {
+test('parse - {plus}', t => {
   t.deepEqual(
     parse('f+o=a+b%2B+c', { plus: true }),
     { 'f o': 'a b+ c' },
@@ -122,7 +122,7 @@ test('parse - {plus}', function (t) {
   t.end()
 })
 
-test('parse - array values', function (t) {
+test('parse - array values', t => {
   t.deepEqual(
     parse('foo=a&foo=b&foo=c'),
     { foo: [ 'a', 'b', 'c' ] },
@@ -185,7 +185,7 @@ test('parse - array values', function (t) {
   t.end()
 })
 
-test('parse - json string values', function (t) {
+test('parse - json string values', t => {
   t.deepEqual(
     parse('a=%7B%22foo%22%3A%22bar%22%7D', { json: true }),
     { a: { foo: 'bar' } },

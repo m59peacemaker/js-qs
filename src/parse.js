@@ -2,51 +2,35 @@ import tryCatch from 'try_catch'
 import { hasBracket, stripBracket } from './lib/brackets'
 
 // returns parsed object if `s` is a JSON string or returns undefined
-var tryParseJSON = function (s) {
-  var first = s.slice(0, 1)
-  var last = s.slice(-1)
+const tryParseJSON = s => {
+  const first = s.slice(0, 1)
+  const last = s.slice(-1)
   if ((first === '{' || first === '[') && (last === '}' || last === ']')) {
-    return tryCatch(
-      function () { return  JSON.parse(s) },
-      function () {}
-    )
+    return tryCatch(() => JSON.parse(s), () => undefined)
   }
 }
 
 // returns the first delimiter in `delimiters` that is present in `v` or returns `undefined`
-var chooseDelimiter = function (delimiters, v) {
-  return delimiters.reduceRight(function (acc, d) {
-    return v.indexOf(d) !== -1 ? d : acc
-  }, undefined)
+const chooseDelimiter = (delimiters, v) =>
+  delimiters.reduceRight((acc, d) => v.indexOf(d) !== -1 ? d : acc, undefined)
+
+const FormatValue = (options, decode) => {
+  const maybeUndefined = v => v === undefined ? null : undefined
+  const maybeJSON = s => options.json ? tryParseJSON(decode(s)) : undefined
+  const maybeDelimiter = v => {
+    const delimiter = chooseDelimiter(options.delimiters, v)
+    return delimiter
+      ? v.split(delimiter).map(item => maybeJSON(item) || decode(item))
+      : undefined
+  }
+
+  const transformers = [ maybeUndefined, maybeJSON, maybeDelimiter, decode ]
+
+  return v =>
+    transformers.reduce((acc, fn) => acc === undefined ? fn(v) : acc, undefined)
 }
 
-var FormatValue = function (options, decode) {
-  var maybeUndefined = function (v) {
-    if (v === undefined) { return null }
-  }
-  var maybeJSON = function (s) {
-    if (options.json) { return tryParseJSON(decode(s)) }
-  }
-  var maybeDelimiter = function (v) {
-    var delimiter = chooseDelimiter(options.delimiters, v)
-    if (delimiter) {
-      return v.split(delimiter).map(function (item) {
-        return maybeJSON(item) || decode(item)
-      })
-    }
-  }
-
-  var transformers = [ maybeUndefined, maybeJSON, maybeDelimiter, decode ]
-
-  return function (v) {
-    return transformers.reduce(function (acc, fn) {
-      return acc === undefined ? fn(v) : acc
-    }, undefined)
-  }
-}
-
-var parse = function (string, options) {
-  options = options || {}
+const parse = (string, options = {}) => {
   options.json = options.json !== false
   options.plus = options.plus !== false
   options.delimiters = options.delimiters || []
@@ -58,21 +42,21 @@ var parse = function (string, options) {
     throw new Error('"+" cannot be used as a delimiter unless options.plus is false')
   }
 
-  var decode = function (v) {
+  const decode = v => {
     if (options.plus) { v = v.replace(/\+/g, ' ') }
     return decodeURIComponent(v)
   }
 
-  var formatValue = FormatValue(options, decode)
+  const formatValue = FormatValue(options, decode)
 
-  var params = Object.create(null)
-  var isGrouped = {}
-  string.length && string.split('&').forEach(function (part) {
-    var x = part.split('=')
-    var _k = x[0]
-    var k = decode(stripBracket(_k))
-    var _v = x.length > 1 ? x.slice(1).join('=') : undefined
-    var v = formatValue(_v)
+  const params = Object.create(null)
+  const isGrouped = {}
+  string.length && string.split('&').forEach(part => {
+    const x = part.split('=')
+    const _k = x[0]
+    const k = decode(stripBracket(_k))
+    const _v = x.length > 1 ? x.slice(1).join('=') : undefined
+    let v = formatValue(_v)
 
     if (Object.prototype.hasOwnProperty.call(params, k)) { // key has appeared before
       if (!isGrouped[k]) {

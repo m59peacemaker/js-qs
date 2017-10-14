@@ -1,7 +1,7 @@
 import test from 'tape'
 import stringify from './stringify'
 
-test('stringify', function (t) {
+test('stringify', t => {
   t.equal(
     stringify({}),
     '',
@@ -27,8 +27,8 @@ test('stringify', function (t) {
     'baz=q%21x&f%2Ao=bar',
     'encodes values'
   )
-  ;(function () {
-    var result = stringify({ a: { foo: 'bar' } })
+  ;(() => {
+    const result = stringify({ a: { foo: 'bar' } })
     t.equal(result, 'a=%7B%22foo%22%3A%22bar%22%7D', 'stringifies object value')
     t.deepEqual(
       JSON.parse(decodeURIComponent(result.slice(2))),
@@ -96,7 +96,7 @@ test('stringify', function (t) {
   t.end()
 })
 
-test('stringify - values are arrays', function (t) {
+test('stringify - values are arrays', t => {
   t.equal(
     stringify({ foo: [ 'a', 'b', 'c' ] }, { arrayFormat: 'duplicate' }),
     'foo=a&foo=b&foo=c',
@@ -118,7 +118,7 @@ test('stringify - values are arrays', function (t) {
     'arrayFormat: \'index\' - foo[0]=value'
   )
   ;(() => {
-    var result = stringify({ a: [ 'a', 'b', 'c' ] }, { arrayFormat: 'json' })
+    const result = stringify({ a: [ 'a', 'b', 'c' ] }, { arrayFormat: 'json' })
     t.deepEqual(
       JSON.parse(decodeURIComponent(result.slice(2))),
       [ 'a', 'b', 'c' ],

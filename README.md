@@ -11,18 +11,18 @@ $ npm install @m59/qs
 ## example
 
 ```js
-const qs = require('@m59/qs')
+import { stringify, parse, extract, replace } from '@m59/qs'
 
-qs.stringify({ crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] })
+stringify({ crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] })
 // => 'crust=thin&toppings=pepperoni&toppings=pepperoni&toppings=bacon'
 
-qs.parse('crust=thin&toppings=pepperoni&toppings=pepperoni&toppings=bacon')
+parse('crust=thin&toppings=pepperoni&toppings=pepperoni&toppings=bacon')
 // => { crust: 'thin', toppings: ['pepperoni', 'pepperoni', 'bacon'] }
 
-qs.extract('http://pizza.pl0x?breadsticks=please#yum')
+extract('http://pizza.pl0x?breadsticks=please#yum')
 // => 'breadsticks=please'
 
-qs.replace('http://pizza.pl0x?breadsticks=please#yum', queryString => 'breadsticks=seriously&marinara')
+replace('http://pizza.pl0x?breadsticks=please#yum', queryString => 'breadsticks=seriously&marinara')
 // => 'http://pizza.pl0x?breadsticks=seriously&marinara#yum'
 ```
 

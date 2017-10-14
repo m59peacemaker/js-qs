@@ -1,7 +1,7 @@
 import test from 'tape'
 import segment from './segment'
 
-test('segment', function (t) {
+test('segment', t => {
   ;[
     [ '',                { main: '',       query: '',          hash: '' } ],
     [ '#?',              { main: '',       query: '',          hash: '#?' } ],
@@ -22,11 +22,11 @@ test('segment', function (t) {
     [ 'm59.us?foo#',     { main: 'm59.us', query: '?foo',      hash: '#' } ],
     [ 'm59.us??##?fo=o', { main: 'm59.us', query: '??',        hash: '##?fo=o' } ],
     [ '??##?foo=bar',    { main: '',       query: '??',        hash: '##?foo=bar' } ]
-  ].forEach(function (set) {
+  ].forEach(([ input, output ]) => {
     t.deepEqual(
-      segment(set[0]),
-      set[1],
-      set[0] + ' => ' + JSON.stringify(set[1])
+      segment(input),
+      output,
+      `${input} => ${JSON.stringify(output)}`
     )
   })
   t.end()
