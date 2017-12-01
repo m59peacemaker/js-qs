@@ -1,6 +1,6 @@
 {
   "name": "@m59/qs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Functions for working with query strings.",
   "keywords": [
     "query",
