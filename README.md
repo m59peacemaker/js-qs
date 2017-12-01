@@ -82,7 +82,7 @@ stringify({ foo: [true, 123, 'abc', {x: false}] }, { arrayFormat: 'json' })
 Arrays can be output as a single key=value pair with the items joined by a delimiter.
 
 ```js
-stringify({ foo: ['a', 'b', 'c'] }, { delimiter: ';' })
+stringify({ foo: ['a', 'b', 'c'] }, { arrayFormat: { delimiter: ';' } })
 // => 'foo=a;b;c'
 ```
 
